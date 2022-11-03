@@ -10,6 +10,11 @@ foreach(library IN LISTS XRN_LIBRARIES_REQUIREMENTS)
     find_dependency(${library} REQUIRED)
 endforeach()
 
+# Qt
+find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
+
+
+
 add_library(XRN_${XRN_BIN_NAME}_BIN_OBJECTS OBJECT ${XRN_MAIN} ${XRN_SOURCES} ${XRN_FRAGMENT} ${XRN_VERTEX} ${XRN_HEADERS})
 
 if (ENABLE_PCH)
@@ -28,9 +33,12 @@ if (ENABLE_BINARY)
             ${XRN_BIN_NAME}_project_warnings
             ${XRN_BIN_NAME}_project_dependencies
             ${XRN_LIBRARIES_DEPENDENCIES}
+            Qt6::Core
+            Qt6::Gui
+            Qt6::Widgets
     )
-    add_executable(${XRN_BIN_NAME} $<TARGET_OBJECTS:XRN_${XRN_BIN_NAME}_BIN_OBJECTS>)
 
+    add_executable(${XRN_BIN_NAME} $<TARGET_OBJECTS:XRN_${XRN_BIN_NAME}_BIN_OBJECTS>)
     target_link_libraries(
         ${XRN_BIN_NAME}
         PRIVATE

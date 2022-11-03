@@ -115,4 +115,7 @@ using ::std::chrono_literals::operator""ms;
 #include <xrn/Log.hpp>
 // #include <xrn/Meta>
 
+#include <QtWidgets>
+#include <QLineEdit>
+
 #endif // ___INCLUDE_GUARD_INCLUDES_PCH_HPP___

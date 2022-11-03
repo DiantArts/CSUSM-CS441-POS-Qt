@@ -11,9 +11,9 @@ set(XRN_CXX_VERSION 23)
 # dependencies
 set(XRN_PERSONAL_DEPENDENCIES xrnLog) # include other xrn projects
 set(XRN_LIBRARIES_REQUIRED spdlog/1.10.0)
-set(XRN_LIBRARIES_REQUIREMENTS spdlog fmt) # find_package
-set(XRN_LIBRARIES_DEPENDENCIES CONAN_PKG::spdlog CONAN_PKG::fmt) # target_link_libraries
-set(XRN_LIBRARIES_HEADERS spdlog fmt) # include_directories()
+set(XRN_LIBRARIES_REQUIREMENTS spdlog fmt Qt6Core Qt6Widgets) # find_package
+set(XRN_LIBRARIES_DEPENDENCIES CONAN_PKG::spdlog CONAN_PKG::fmt Qt6::Core Qt6::Widgets) # target_link_libraries
+set(XRN_LIBRARIES_HEADERS spdlog fmt Qt6Widgets) # include_directories()
 
 set(SPDLOG_BUILD_SHARED OFF)
 set(SPDLOG_FMT_EXTERNAL ON)
