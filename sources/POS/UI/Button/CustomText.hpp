@@ -1,18 +1,18 @@
 #pragma once
 
-namespace pos::ui {
+#include <POS/UI/Button/ATextButton.hpp>
+
+namespace pos::ui::button {
 
 ///////////////////////////////////////////////////////////////////////////
-/// \brief Simplifies and automates the usage of a qt window
+/// \brief Simplifies the usage of a Qt button with an image
 /// \ingroup ecs
 ///
-/// \include Window.hpp <POS/UI/Window.hpp>
-///
-/// Contains a ::QApplication and a ::QMainWindow window
+/// \include CustomText.hpp <POS/UI/Button/CustomText.hpp>
 ///
 ///////////////////////////////////////////////////////////////////////////
-class Window
-    : public ::QApplication
+class CustomText
+    : public ::pos::ui::ATextButton
 {
 
 public:
@@ -27,54 +27,45 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Constructor
     ///
-    /// Creates, Resizes, renames, and show a Qt window
+    /// The filename is searched within the ./assets/ directory
     ///
     ///////////////////////////////////////////////////////////////////////////
-    explicit Window(
-        int argc,
-        char *argv[],
+    explicit CustomText(
+        ::QMainWindow& window,
+        const ::std::string& text,
+        ::std::size_t xPos,
+        ::std::size_t yPos,
         ::std::size_t xSize,
         ::std::size_t ySize,
-        const ::std::string& name
+        ::std::function<void()> callback
     ) noexcept;
 
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // Helpers
+    // Override
     //
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
+    /// \brief Behavior on button click
+    ///
+    /// Remove the selected row
     ///
     ///////////////////////////////////////////////////////////////////////////
-    void resize(
-        ::std::size_t xSize,
-        ::std::size_t ySize
-    );
-
-    ///////////////////////////////////////////////////////////////////////////
-    ///
-    ///////////////////////////////////////////////////////////////////////////
-    [[ nodiscard ]] auto get()
-        -> ::QMainWindow&;
-
-    ///////////////////////////////////////////////////////////////////////////
-    ///
-    ///////////////////////////////////////////////////////////////////////////
-    [[ nodiscard ]] auto getSize() const
-        -> ::QSize;
+    auto hitButton(
+        const QPoint &pos
+    ) const
+        -> bool override;
 
 
 
 private:
 
-    ::QMainWindow m_window;
-    ::std::size_t m_xSize;
-    ::std::size_t m_ySize;
+    ::std::function<void()> m_callback;
 
 };
 
-} // namespace pos::ui
+} // namespace pos::ui::button

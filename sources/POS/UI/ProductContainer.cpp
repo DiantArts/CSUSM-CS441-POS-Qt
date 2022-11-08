@@ -7,6 +7,7 @@
 // Headers
 ///////////////////////////////////////////////////////////////////////////
 #include <POS/UI/ProductContainer.hpp>
+#include <POS/UI/ErrorNotification.hpp>
 
 
 
@@ -54,6 +55,7 @@
 
     m_totalTextBox.setVerticalScrollBarPolicy(::Qt::ScrollBarAlwaysOff);
     this->printTotal();
+    m_table->show();
 }
 
 
@@ -93,6 +95,20 @@ auto ::pos::ui::ProductContainer::add(
 }
 
 ///////////////////////////////////////////////////////////////////////////
+auto ::pos::ui::ProductContainer::add(
+    const ::std::string& id
+) -> ::std::size_t
+{
+    if (id.empty()) {
+        new ::pos::ui::ErrorNotification{ m_window, "No ID specified" };
+        throw ::std::runtime_error{ "Null ID" };
+    }
+    new ::pos::ui::ErrorNotification{ m_window, "The ID '"s + id + "' does not match any product" };
+    throw ::std::runtime_error{ "No matching ID" };
+    return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////
 void ::pos::ui::ProductContainer::remove(
     ::std::size_t productIndex
 )
@@ -116,22 +132,7 @@ void ::pos::ui::ProductContainer::removeSelected()
         }
         this->printTotal();
     } else {
-        QMessageBox* msg = new QMessageBox{ &m_window };
-        msg->setText("No remaining item to delete");
-        msg->setWindowFlags(msg->windowFlags() | Qt::WindowStaysOnTopHint);
-        msg->setStyleSheet(
-            "background-color: #FFFFFF; "
-            "color:rgb(255,0,0); "
-            "font-size: 15px; "
-            "QMessageBox { border-color: rgb(0, 0, 0); "
-            "border-style: none; "
-            "border-width: 0px; }"
-        );
-        msg->setModal(false);
-        msg->setStandardButtons(QMessageBox::StandardButton::NoButton);
-        msg->show();
-        QTimer::singleShot(1500, msg, SLOT(hide()));
-        m_window.setFocus();
+        new ::pos::ui::ErrorNotification{ m_window, "No remaining item to delete" };
     }
 }
 

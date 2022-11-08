@@ -3,6 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////
 #include <pch.hpp>
 #include <POS/UI/Window.hpp>
+#include <POS/UI/Screen/Home.hpp>
 
 ///////////////////////////////////////////////////////////////////////////
 auto main(
@@ -29,6 +30,7 @@ auto main(
 
     // widget->show();
 
-    ::pos::ui::Window m_window{ argc, argv, 520, 520, "MainPosSystemWindow" };
-    return m_window.exec();
+    ::pos::ui::Window window{ argc, argv, 720, 520, "MainPosSystemWindow" };
+    ::pos::ui::screen::Home homeScreen{ window };
+    return window.exec();
 }

@@ -69,6 +69,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////
+void ::pos::ui::box::ATextBox::addText(
+    const ::std::string& text
+)
+{
+    m_lines.back() += text;
+}
+
+///////////////////////////////////////////////////////////////////////////
 void ::pos::ui::box::ATextBox::addLine(
     const ::std::string& line
 )
@@ -116,6 +124,21 @@ void ::pos::ui::box::ATextBox::resize(
     m_xSize = xSize;
     m_ySize = ySize;
     this->updateGeometry();
+}
+
+///////////////////////////////////////////////////////////////////////////
+auto ::pos::ui::box::ATextBox::getText() const
+    -> ::std::string
+{
+    ::std::string str;
+    for (const auto& line : m_lines) {
+        str += line;
+        str += '\n';
+    }
+    if (!str.empty()) {
+        str.erase(str.size() - 1);
+    }
+    return str;
 }
 
 
