@@ -49,7 +49,11 @@ private:
     ::pos::ui::Window& m_window;
     ::pos::ui::ProductContainer m_products;
     ::pos::ui::VirtualKeyPad m_virtualKeyPad;
-    ::pos::ui::button::CustomImage m_deletProductButton;
+
+    ::pos::ui::button::CustomImage m_deleteProductButton;
+    ::pos::ui::button::CustomImage m_clearProductButton;
+    ::pos::ui::button::CustomImage m_payProductButton;
+    ::pos::ui::button::CustomImage m_addProductButton;
 
 };
 

@@ -33,22 +33,56 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     explicit VirtualKeyPad(
         ::QMainWindow& window,
-        ::pos::ui::ProductContainer& products,
-        ::std::size_t xPos,
-        ::std::size_t yPos,
+        ::std::size_t visibleXPos,
+        ::std::size_t visibleYPos,
+        ::std::size_t unvisibleXPos,
+        ::std::size_t unvisibleYPos,
         ::std::size_t xSize,
         ::std::size_t ySize
     ) noexcept;
 
 
 
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Animatiton
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///
+    ///////////////////////////////////////////////////////////////////////////
+    void reveal(
+        ::std::function<void(const ::std::string&)> validateCallback
+    );
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///
+    ///////////////////////////////////////////////////////////////////////////
+    void conceal();
+
+
+
 private:
 
+    ::std::size_t m_visibleXPos;
+    ::std::size_t m_visibleYPos;
+    ::std::size_t m_unvisibleXPos;
+    ::std::size_t m_unvisibleYPos;
+
     ::QSize m_buttonSize;
-    ::pos::ui::ProductContainer& m_products;
+
+    ::std::optional<::std::function<void(const ::std::string&)>> m_validateCallback;
 
     ::pos::ui::box::ATextBox m_textBox;
-    ::std::array<::pos::ui::button::CustomText, 12> m_keyPadButtons;
+    ::std::array<::pos::ui::button::CustomText, 16> m_buttons;
+
+    ::QPropertyAnimation m_textBoxAnimation;
+    ::std::array<::QPropertyAnimation, 16> m_buttonAnimations;
+
+    static inline constexpr const ::std::size_t animationDuration{ 200 };
 
 };
 

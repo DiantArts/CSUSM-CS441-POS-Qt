@@ -95,17 +95,11 @@ auto ::pos::ui::ProductContainer::add(
 }
 
 ///////////////////////////////////////////////////////////////////////////
-auto ::pos::ui::ProductContainer::add(
+auto ::pos::ui::ProductContainer::emplaceFromId(
     const ::std::string& id
 ) -> ::std::size_t
 {
-    if (id.empty()) {
-        new ::pos::ui::ErrorNotification{ m_window, "No ID specified" };
-        throw ::std::runtime_error{ "Null ID" };
-    }
-    new ::pos::ui::ErrorNotification{ m_window, "The ID '"s + id + "' does not match any product" };
-    throw ::std::runtime_error{ "No matching ID" };
-    return 0;
+    return this->add(::pos::Product::getFromDataBase(id));
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -134,6 +128,16 @@ void ::pos::ui::ProductContainer::removeSelected()
     } else {
         new ::pos::ui::ErrorNotification{ m_window, "No remaining item to delete" };
     }
+}
+
+///////////////////////////////////////////////////////////////////////////
+void ::pos::ui::ProductContainer::clear()
+{
+    while (m_table->rowCount()) {
+        m_table->removeRow(0);
+    }
+    m_products.clear();
+    this->printTotal();
 }
 
 

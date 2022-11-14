@@ -31,6 +31,7 @@ auto main(
     // widget->show();
 
     ::pos::ui::Window window{ argc, argv, 720, 520, "MainPosSystemWindow" };
+    // ::pos::ui::Window window{ argc, argv, 1920, 1080, "MainPosSystemWindow" };
     ::pos::ui::screen::Home homeScreen{ window };
     return window.exec();
 }
