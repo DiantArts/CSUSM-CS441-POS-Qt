@@ -25,12 +25,28 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Constructor
     ///
-    /// The filename is searched within the ./assets/ directory
+    /// The filename is searched within the ./assets/icon directory
     ///
     ///////////////////////////////////////////////////////////////////////////
     explicit AImageButton(
         ::QMainWindow& window,
         const ::std::string& filename,
+        ::std::size_t xPos,
+        ::std::size_t yPos,
+        ::std::size_t xSize,
+        ::std::size_t ySize
+    ) noexcept;
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Constructor with tooltip
+    ///
+    /// The filename is searched within the ./assets/icon directory
+    ///
+    ///////////////////////////////////////////////////////////////////////////
+    explicit AImageButton(
+        ::QMainWindow& window,
+        const ::std::string& filename,
+        const ::std::string& tooltip,
         ::std::size_t xPos,
         ::std::size_t yPos,
         ::std::size_t xSize,

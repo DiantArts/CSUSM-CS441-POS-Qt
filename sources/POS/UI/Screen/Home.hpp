@@ -50,11 +50,17 @@ private:
     ::pos::ui::ProductContainer m_products;
     ::pos::ui::VirtualKeyPad m_virtualKeyPad;
 
-    ::pos::ui::button::CustomImage m_deleteProductButton;
-    ::pos::ui::button::CustomImage m_clearProductButton;
-    ::pos::ui::button::CustomImage m_payProductButton;
     ::pos::ui::button::CustomImage m_addProductButton;
-
+    ::pos::ui::button::CustomImage m_removeProductButton;
+    ::pos::ui::button::CustomImage m_clearCartButton;
+    ::pos::ui::button::CustomImage m_addFundsButton;
+    ::pos::ui::button::CustomImage m_payButton;
+    ::pos::ui::button::CustomImage m_saveCartButton;
+    ::pos::ui::button::CustomImage m_loadCartButton;
+    ::pos::ui::button::CustomImage m_exitButton;
+    ::pos::ui::button::CustomImage m_createOnDataBaseButton;
+    ::pos::ui::button::CustomImage m_removeOnDataBaseButton;
+    ::pos::ui::button::CustomImage m_searchInformationOnDataBaseButton;
 };
 
 } // namespace pos::ui::screen

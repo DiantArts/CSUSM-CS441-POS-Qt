@@ -35,10 +35,11 @@
 ) noexcept
     : m_window{ window }
     , m_table{ new QTableWidget{ 0, 3, &window } }
-    , m_totalTextBox{ window, xPos, yPos + ySize - 18, xSize, 18 }
+    , m_totalTextBox{ window, xPos, yPos + ySize - (18 * 2 + 2), xSize, 18 }
+    , m_fundsTextBox{ window, xPos, yPos + ySize - 18, xSize, 18 }
 {
     m_table->move(static_cast<int>(xPos), static_cast<int>(yPos));
-    m_table->resize(static_cast<int>(xSize), static_cast<int>(ySize - 20));
+    m_table->resize(static_cast<int>(xSize), static_cast<int>(ySize - (20 * 2)));
     m_table->verticalHeader()->hide();
     m_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_table->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -54,7 +55,9 @@
     m_table->horizontalHeader()->setStretchLastSection(true);
 
     m_totalTextBox.setVerticalScrollBarPolicy(::Qt::ScrollBarAlwaysOff);
+    m_fundsTextBox.setVerticalScrollBarPolicy(::Qt::ScrollBarAlwaysOff);
     this->printTotal();
+    this->printFunds();
     m_table->show();
 }
 
@@ -79,8 +82,9 @@ auto ::pos::ui::ProductContainer::add(
     m_table->insertRow(static_cast<int>(index));
     m_table->setCurrentIndex(m_table->model()->index(static_cast<int>(index), 0));
 
-    m_table->setItem(static_cast<int>(index), 0, new ::QTableWidgetItem{ ::fmt::format("${:.2f}",
-        product.getPrice() * static_cast<float>(product.getQuantity())
+    m_table->setItem(static_cast<int>(index), 0, new ::QTableWidgetItem{ ::fmt::format("${}.{}",
+        product.getPrice() * product.getQuantity() / 100,
+        product.getPrice() * product.getQuantity() % 100
     ).c_str() });
     m_table->setItem(static_cast<int>(index), 1, new ::QTableWidgetItem{ ::fmt::format("{}",
         product.getQuantity()
@@ -100,6 +104,36 @@ auto ::pos::ui::ProductContainer::emplaceFromId(
 ) -> ::std::size_t
 {
     return this->add(::pos::Product::getFromDataBase(id));
+}
+
+///////////////////////////////////////////////////////////////////////////
+auto ::pos::ui::ProductContainer::addFunds(
+    const ::std::string& valueStr
+) -> ::std::size_t
+{
+    m_funds += ::std::stoi(valueStr) * 100;
+    if (auto it{ valueStr.find(".") }; it != ::std::string::npos) {
+        m_funds += ::std::stoi(valueStr.substr(it + 1));
+    }
+    this->printFunds();
+    return m_funds;
+}
+
+///////////////////////////////////////////////////////////////////////////
+auto ::pos::ui::ProductContainer::pay()
+    -> bool
+{
+    auto total{ 0ll };
+    for (const auto& p : m_products) {
+        total += p.getPrice() * p.getQuantity();
+    }
+    if (m_funds >= total) {
+        this->clear();
+        m_funds -= total;
+        this->printFunds();
+        return true;
+    }
+    return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -152,11 +186,25 @@ void ::pos::ui::ProductContainer::clear()
 ///////////////////////////////////////////////////////////////////////////
 void ::pos::ui::ProductContainer::printTotal()
 {
-    auto total{ 0.0f };
+    auto total{ 0ll };
     for (const auto& p : m_products) {
-        total += p.getPrice() * static_cast<float>(p.getQuantity());
+        total += p.getPrice() * p.getQuantity();
     }
     m_totalTextBox.clearLine();
-    m_totalTextBox.addLine(::fmt::format("Total: ${:.2f}", total));
+    m_totalTextBox.addLine(::fmt::format("Total: ${}.{}", total / 100, total % 100));
     m_totalTextBox.print();
+}
+
+///////////////////////////////////////////////////////////////////////////
+void ::pos::ui::ProductContainer::printFunds()
+{
+    m_fundsTextBox.clearLine();
+    if (m_funds % 100 == 0) {
+        m_fundsTextBox.addLine(::fmt::format("Funds: ${}.00", m_funds / 100, m_funds % 100));
+    } else if (m_funds % 100 < 10) {
+        m_fundsTextBox.addLine(::fmt::format("Funds: ${}.0{}", m_funds / 100, m_funds % 100));
+    } else {
+        m_fundsTextBox.addLine(::fmt::format("Funds: ${}.{}", m_funds / 100, m_funds % 100));
+    }
+    m_fundsTextBox.print();
 }

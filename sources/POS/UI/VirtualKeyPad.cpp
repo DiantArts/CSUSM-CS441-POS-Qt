@@ -75,6 +75,7 @@
                 } catch (const ::std::exception& e) {
                     new ::pos::ui::ErrorNotification{ window, e.what() };
                 }
+                this->conceal();
             }
         }, ::pos::ui::button::CustomText{
             window,
@@ -110,12 +111,12 @@
             [this](){ m_textBox.addText("3"); m_textBox.print(); }
         }, ::pos::ui::button::CustomText{
             window,
-            "<NONE>",
+            ".",
             unvisibleXPos + m_buttonSize.width() * 3,
             unvisibleYPos + m_buttonSize.height() * 3,
             static_cast<::std::size_t>(m_buttonSize.width()),
             static_cast<::std::size_t>(m_buttonSize.height()),
-            [this](){}
+            [this](){ m_textBox.addText("."); m_textBox.print(); }
         }, ::pos::ui::button::CustomText{
             window,
             "4",
@@ -423,7 +424,6 @@ void ::pos::ui::VirtualKeyPad::reveal(
     }
     ++i;
     {
-        ::fmt::print("{}\n", i);
         const auto startPosX{ m_unvisibleXPos + m_buttonSize.width() * 3 };
         const auto startPosY{ m_unvisibleYPos + m_buttonSize.height() * 2 };
         const auto endPosX{ m_visibleXPos + m_buttonSize.width() * 3 };

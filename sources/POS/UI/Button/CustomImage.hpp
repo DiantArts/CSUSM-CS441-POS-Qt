@@ -40,6 +40,23 @@ public:
         ::std::function<void()> callback
     ) noexcept;
 
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Constructor with tooltip
+    ///
+    /// The filename is searched within the ./assets/icon directory
+    ///
+    ///////////////////////////////////////////////////////////////////////////
+    explicit CustomImage(
+        ::QMainWindow& window,
+        const ::std::string& filepath,
+        const ::std::string& tooltip,
+        ::std::size_t xPos,
+        ::std::size_t yPos,
+        ::std::size_t xSize,
+        ::std::size_t ySize,
+        ::std::function<void()> callback
+    ) noexcept;
+
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,6 +81,7 @@ public:
 
 private:
 
+    ::QMainWindow& m_window;
     ::std::function<void()> m_callback;
 
 };

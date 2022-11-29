@@ -52,7 +52,7 @@ public:
     explicit Product(
         ::std::size_t id,
         ::std::string name,
-        float price,
+        ::std::int64_t price,
         ::std::size_t quantity = 1
     ) noexcept;
 
@@ -81,7 +81,7 @@ public:
     ///
     ///////////////////////////////////////////////////////////////////////////
     [[ nodiscard ]] auto getPrice() const
-        -> float;
+        -> ::std::int64_t;
 
     ///////////////////////////////////////////////////////////////////////////
     ///
@@ -95,7 +95,7 @@ private:
 
     ::std::size_t m_id;
     ::std::string m_name;
-    float m_price;
+    ::std::int64_t m_price;
     ::std::size_t m_quantity;
 
 };

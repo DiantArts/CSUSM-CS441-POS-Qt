@@ -25,7 +25,7 @@ auto ::pos::Product::getFromDataBase(
         throw ::std::runtime_error{ "No ID specified" };
     }
     throw ::std::runtime_error{ "The ID '"s + id + "' does not match any product" };
-    return Product{ 0, "randomProduct", 666.66f, 666 };
+    return Product{ 0, "randomProduct", 66666, 666 };
 }
 
 
@@ -41,7 +41,7 @@ auto ::pos::Product::getFromDataBase(
 ::pos::Product::Product(
     ::std::size_t id,
     ::std::string name,
-    float price,
+    ::std::int64_t price,
     ::std::size_t quantity
 ) noexcept
     : m_id{ id }
@@ -81,7 +81,7 @@ auto ::pos::Product::getName() const
 ///
 ///////////////////////////////////////////////////////////////////////////
 auto ::pos::Product::getPrice() const
-    -> float
+    -> ::std::int64_t
 {
     return m_price;
 }

@@ -7,6 +7,7 @@
 // Headers
 ///////////////////////////////////////////////////////////////////////////
 #include <POS/UI/Button/CustomImage.hpp>
+#include <POS/UI/ErrorNotification.hpp>
 
 
 
@@ -28,6 +29,23 @@
     ::std::function<void()> callback
 ) noexcept
     : ::pos::ui::AImageButton{ window, filepath, xPos, yPos, xSize, ySize }
+    , m_window{ window }
+    , m_callback{ ::std::move(callback) }
+{}
+
+///////////////////////////////////////////////////////////////////////////
+::pos::ui::button::CustomImage::CustomImage(
+    ::QMainWindow& window,
+    const ::std::string& filepath,
+    const ::std::string& tooltip,
+    ::std::size_t xPos,
+    ::std::size_t yPos,
+    ::std::size_t xSize,
+    ::std::size_t ySize,
+    ::std::function<void()> callback
+) noexcept
+    : ::pos::ui::AImageButton{ window, filepath, tooltip, xPos, yPos, xSize, ySize }
+    , m_window{ window }
     , m_callback{ ::std::move(callback) }
 {}
 
@@ -46,6 +64,10 @@ auto ::pos::ui::button::CustomImage::hitButton(
 ) const
     -> bool
 {
-    m_callback();
+    try {
+        m_callback();
+    } catch (const ::std::exception& e) {
+        new ::pos::ui::ErrorNotification{ m_window, e.what() };
+    }
     return false;
 }

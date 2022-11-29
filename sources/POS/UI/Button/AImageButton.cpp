@@ -28,11 +28,25 @@
 ) noexcept
     : ::QPushButton{ &window }
 {
-    this->setIcon(::QIcon{ ("./assets/"s + filename).c_str() });
+    this->setIcon(::QIcon{ ("./assets/icon/"s + filename).c_str() });
     this->setIconSize(::QSize{ static_cast<int>(xSize), static_cast<int>(ySize) });
     this->move(static_cast<int>(xPos), static_cast<int>(yPos));
     this->resize(static_cast<int>(xSize), static_cast<int>(ySize));
     this->show();
+}
+///////////////////////////////////////////////////////////////////////////
+::pos::ui::button::AImageButton::AImageButton(
+    ::QMainWindow& window,
+    const ::std::string& filename,
+    const ::std::string& tooltip,
+    ::std::size_t xPos,
+    ::std::size_t yPos,
+    ::std::size_t xSize,
+    ::std::size_t ySize
+) noexcept
+    : AImageButton{ window, filename, xPos, yPos, xSize, ySize }
+{
+    this->setToolTip(tooltip.c_str());
 }
 
 
