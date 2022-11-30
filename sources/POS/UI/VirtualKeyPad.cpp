@@ -39,7 +39,7 @@
         unvisibleXPos + m_buttonSize.width() * 0,
         unvisibleYPos + m_buttonSize.height() * 0,
         xSize,
-        static_cast<::std::size_t>(m_buttonSize.height()),
+        static_cast<::std::size_t>(m_buttonSize.height())
     } , m_buttons{
         ::pos::ui::button::CustomText{
             window,
@@ -111,12 +111,12 @@
             [this](){ m_textBox.addText("3"); m_textBox.print(); }
         }, ::pos::ui::button::CustomText{
             window,
-            ".",
+            ".00",
             unvisibleXPos + m_buttonSize.width() * 3,
             unvisibleYPos + m_buttonSize.height() * 3,
             static_cast<::std::size_t>(m_buttonSize.width()),
             static_cast<::std::size_t>(m_buttonSize.height()),
-            [this](){ m_textBox.addText("."); m_textBox.print(); }
+            [this](){ m_textBox.addText(".00"); m_textBox.print(); }
         }, ::pos::ui::button::CustomText{
             window,
             "4",
@@ -143,12 +143,12 @@
             [this](){ m_textBox.addText("6"); m_textBox.print(); }
         }, ::pos::ui::button::CustomText{
             window,
-            "<NONE>",
+            ".0",
             unvisibleXPos + m_buttonSize.width() * 3,
             unvisibleYPos + m_buttonSize.height() * 2,
             static_cast<::std::size_t>(m_buttonSize.width()),
             static_cast<::std::size_t>(m_buttonSize.height()),
-            [this](){}
+            [this](){ m_textBox.addText(".0"); m_textBox.print(); }
         }, ::pos::ui::button::CustomText{
             window,
             "7",
@@ -175,12 +175,12 @@
             [this](){ m_textBox.addText("9"); m_textBox.print(); }
         }, ::pos::ui::button::CustomText{
             window,
-            "<NONE>",
+            ".",
             unvisibleXPos + m_buttonSize.width() * 3,
             unvisibleYPos + m_buttonSize.height() * 1,
             static_cast<::std::size_t>(m_buttonSize.width()),
             static_cast<::std::size_t>(m_buttonSize.height()),
-            [this](){}
+            [this](){ m_textBox.addText("."); m_textBox.print(); }
         }
     }, m_textBoxAnimation {
         ::QPropertyAnimation{ &m_textBox, "pos" },
@@ -223,6 +223,7 @@ void ::pos::ui::VirtualKeyPad::reveal(
     ::std::function<void(const ::std::string&)> validateCallback
 )
 {
+    m_isVisible = true;
     m_validateCallback = validateCallback;
     auto i{ 0uz };
     {
@@ -536,6 +537,7 @@ void ::pos::ui::VirtualKeyPad::reveal(
 ///////////////////////////////////////////////////////////////////////////
 void ::pos::ui::VirtualKeyPad::conceal()
 {
+    m_isVisible = false;
     m_textBox.clearLine();
     m_textBox.addLine("");
     m_textBox.print();
@@ -826,5 +828,16 @@ void ::pos::ui::VirtualKeyPad::conceal()
             static_cast<int>(endPosY)
         });
         m_textBoxAnimation.start();
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////
+void ::pos::ui::VirtualKeyPad::write(
+    const ::std::string& str
+)
+{
+    if (m_isVisible) {
+        m_textBox.addText(str);
+        m_textBox.print();
     }
 }

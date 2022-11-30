@@ -99,6 +99,13 @@ auto ::pos::ui::ProductContainer::add(
 }
 
 ///////////////////////////////////////////////////////////////////////////
+auto ::pos::ui::ProductContainer::size()
+    -> ::std::size_t
+{
+    return m_products.size();
+}
+
+///////////////////////////////////////////////////////////////////////////
 auto ::pos::ui::ProductContainer::emplaceFromId(
     const ::std::string& id
 ) -> ::std::size_t

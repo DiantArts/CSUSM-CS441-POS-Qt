@@ -43,7 +43,8 @@ public:
         ::std::size_t xPos,
         ::std::size_t yPos,
         ::std::size_t xSize,
-        ::std::size_t ySize
+        ::std::size_t ySize,
+        bool readOnly = true
     ) noexcept;
 
 

@@ -30,7 +30,8 @@
     ::std::size_t xPos,
     ::std::size_t yPos,
     ::std::size_t xSize,
-    ::std::size_t ySize
+    ::std::size_t ySize,
+    bool readOnly
 ) noexcept
     : ::QTextEdit{ &window }
     , m_xPos{ xPos }
@@ -40,7 +41,7 @@
 {
     this->updateGeometry();
     this->setAlignment(::Qt::AlignLeft);
-    this->setReadOnly(true);
+    this->setReadOnly(readOnly);
     this->show();
 }
 

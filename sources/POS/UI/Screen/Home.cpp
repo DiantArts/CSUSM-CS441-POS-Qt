@@ -93,7 +93,9 @@
         static_cast<::std::size_t>(m_window.getSize().width() * 0.08),
         static_cast<::std::size_t>(m_window.getSize().height() * 0.08),
         [this](){
-            if (!m_products.pay()) {
+            if (!m_products.size()) {
+                throw ::std::runtime_error{ "Nothing is present in the cart" };
+            } else if (!m_products.pay()) {
                 throw ::std::runtime_error{ "Not enough funds to pay" };
             }
         }
@@ -124,6 +126,7 @@
     }, m_exitButton{
         m_window.get(),
         "exit.png",
+        "Close the POS application",
         static_cast<::std::size_t>(m_window.getSize().width() * 0.86),
         static_cast<::std::size_t>(m_window.getSize().height() * 0.85),
         static_cast<::std::size_t>(m_window.getSize().width() * 0.08),
@@ -134,6 +137,7 @@
     }, m_createOnDataBaseButton{
         m_window.get(),
         "create.png",
+        "Create a new product in the data base (will probably never work)",
         static_cast<::std::size_t>(m_window.getSize().width() * 0.86),
         static_cast<::std::size_t>(m_window.getSize().height() * 0.05),
         static_cast<::std::size_t>(m_window.getSize().width() * 0.08),
@@ -146,6 +150,7 @@
     }, m_removeOnDataBaseButton{
         m_window.get(),
         "removeFromDB.png",
+        "Remove a product in the data base (will probably never work)",
         static_cast<::std::size_t>(m_window.getSize().width() * 0.86),
         static_cast<::std::size_t>(m_window.getSize().height() * 0.15),
         static_cast<::std::size_t>(m_window.getSize().width() * 0.08),
@@ -158,6 +163,7 @@
     }, m_searchInformationOnDataBaseButton{
         m_window.get(),
         "search.png",
+        "Search information of a product in the data base",
         static_cast<::std::size_t>(m_window.getSize().width() * 0.86),
         static_cast<::std::size_t>(m_window.getSize().height() * 0.25),
         static_cast<::std::size_t>(m_window.getSize().width() * 0.08),
@@ -171,4 +177,20 @@
 {
     m_products.emplace(1uz, "article1"s, 10'20ll, 2uz);
     m_products.emplace(1uz, "article2"s, 22'31ll, 1uz);
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Accessors
+//
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////
+[[ nodiscard ]] auto ::pos::ui::screen::Home::getVirtualKeyPad()
+    -> ::pos::ui::VirtualKeyPad&
+{
+    return m_virtualKeyPad;
 }
