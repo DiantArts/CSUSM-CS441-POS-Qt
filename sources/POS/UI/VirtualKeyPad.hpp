@@ -33,6 +33,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     explicit VirtualKeyPad(
         ::QMainWindow& window,
+        ::pos::ui::ProductContainer& products,
         ::std::size_t visibleXPos,
         ::std::size_t visibleYPos,
         ::std::size_t unvisibleXPos,
@@ -86,6 +87,8 @@ private:
 
     ::pos::ui::box::ATextBox m_textBox;
     ::std::array<::pos::ui::button::CustomText, 16> m_buttons;
+
+    ::pos::ui::ProductContainer& m_products;
 
     ::QPropertyAnimation m_textBoxAnimation;
     ::std::array<::QPropertyAnimation, 16> m_buttonAnimations;

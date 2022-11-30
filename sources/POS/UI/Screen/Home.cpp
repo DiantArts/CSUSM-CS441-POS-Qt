@@ -30,6 +30,7 @@
         static_cast<::std::size_t>(m_window.getSize().height() * 0.9)
     }, m_virtualKeyPad {
         m_window.get(),
+        m_products,
         static_cast<::std::size_t>(m_window.getSize().width() * 0.56),
         static_cast<::std::size_t>(m_window.getSize().height() * 0.05),
         static_cast<::std::size_t>(m_window.getSize().width()),

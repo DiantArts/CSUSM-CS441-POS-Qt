@@ -21,6 +21,7 @@
 ///////////////////////////////////////////////////////////////////////////
 ::pos::ui::VirtualKeyPad::VirtualKeyPad(
     ::QMainWindow& window,
+    ::pos::ui::ProductContainer& products,
     ::std::size_t visibleXPos,
     ::std::size_t visibleYPos,
     ::std::size_t unvisibleXPos,
@@ -28,7 +29,8 @@
     ::std::size_t xSize,
     ::std::size_t ySize
 ) noexcept
-    : m_visibleXPos{ visibleXPos }
+    : m_products{ products }
+    , m_visibleXPos{ visibleXPos }
     , m_visibleYPos{ visibleYPos }
     , m_unvisibleXPos{ unvisibleXPos }
     , m_unvisibleYPos{ unvisibleYPos }
@@ -223,6 +225,7 @@ void ::pos::ui::VirtualKeyPad::reveal(
     ::std::function<void(const ::std::string&)> validateCallback
 )
 {
+    m_products.setReadOnly(true);
     m_isVisible = true;
     m_validateCallback = validateCallback;
     auto i{ 0uz };
@@ -537,6 +540,7 @@ void ::pos::ui::VirtualKeyPad::reveal(
 ///////////////////////////////////////////////////////////////////////////
 void ::pos::ui::VirtualKeyPad::conceal()
 {
+    m_products.setReadOnly(false);
     m_isVisible = false;
     m_textBox.clearLine();
     m_textBox.addLine("");
