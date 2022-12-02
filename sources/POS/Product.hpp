@@ -1,6 +1,7 @@
 #pragma once
 
 #include <POS/UI/Box/ATextBox.hpp>
+#include <DB/Products.hpp>
 
 namespace pos {
 
@@ -29,7 +30,8 @@ public:
     ///
     ///////////////////////////////////////////////////////////////////////////
     [[ nodiscard ]] static auto getFromDataBase(
-        const ::std::string& id
+        const ::std::string& id,
+        ::std::shared_ptr<::db::Products> dbProducts
     ) -> Product;
 
 
@@ -49,7 +51,7 @@ public:
     /// forward to the other constructor while passing null valuesa
     ///
     ///////////////////////////////////////////////////////////////////////////
-    explicit Product(
+    Product(
         ::std::size_t id,
         ::std::string name,
         ::std::int64_t price,

@@ -8,6 +8,7 @@
 #include <POS/UI/VirtualKeyPad.hpp>
 #include <POS/UI/Box/ATextBox.hpp>
 #include <POS/UI/Button/CustomImage.hpp>
+#include <DB/Products.hpp>
 
 namespace pos::ui::screen {
 
@@ -39,7 +40,8 @@ public:
     ///
     ///////////////////////////////////////////////////////////////////////////
     explicit Home(
-        ::pos::ui::Window& window
+        ::pos::ui::Window& window,
+        ::std::shared_ptr<::db::Products> dbProducts
     ) noexcept;
 
 
@@ -62,6 +64,8 @@ public:
 private:
 
     ::pos::ui::Window& m_window;
+    ::std::shared_ptr<::db::Products> m_dbProducts;
+
     ::pos::ui::ProductContainer m_products;
     ::pos::ui::VirtualKeyPad m_virtualKeyPad;
 
@@ -73,9 +77,9 @@ private:
     ::pos::ui::button::CustomImage m_saveCartButton;
     ::pos::ui::button::CustomImage m_loadCartButton;
     ::pos::ui::button::CustomImage m_exitButton;
-    ::pos::ui::button::CustomImage m_createOnDataBaseButton;
-    ::pos::ui::button::CustomImage m_removeOnDataBaseButton;
-    ::pos::ui::button::CustomImage m_searchInformationOnDataBaseButton;
+    // ::pos::ui::button::CustomImage m_createOnDataBaseButton;
+    // ::pos::ui::button::CustomImage m_removeOnDataBaseButton;
+    // ::pos::ui::button::CustomImage m_searchInformationOnDataBaseButton;
 };
 
 } // namespace pos::ui::screen

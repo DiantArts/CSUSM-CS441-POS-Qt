@@ -20,24 +20,34 @@
 
 ///////////////////////////////////////////////////////////////////////////
 ::pos::ui::ProductContainer::ProductContainer(
-    ::QMainWindow& window
+    ::QMainWindow& window,
+    ::std::shared_ptr<::db::Products> dbProducts
 ) noexcept
-    : ::pos::ui::ProductContainer{ window, 0, 0, 0, 0 }
+    : ProductContainer{ window, dbProducts, 0, 0, 0, 0 }
 {}
 
 ///////////////////////////////////////////////////////////////////////////
 ::pos::ui::ProductContainer::ProductContainer(
     ::QMainWindow& window,
+    ::std::shared_ptr<::db::Products> dbProducts,
     ::std::size_t xPos,
     ::std::size_t yPos,
     ::std::size_t xSize,
     ::std::size_t ySize
 ) noexcept
     : m_window{ window }
+    , m_dbProducts{ dbProducts }
     , m_table{ new QTableWidget{ 0, 3, &window } }
     , m_totalTextBox{ window, xPos, yPos + ySize - (18 * 2 + 2), xSize, 18 }
     , m_fundsTextBox{ window, xPos, yPos + ySize - 18, xSize, 18 }
 {
+    for (auto i{ 1uz }; true; ++i) {
+        if (::std::ifstream ifs("database/cart/Cart"s + ::std::to_string(i) + ".csv"); !ifs.good()) {
+            m_id = ::std::to_string(i);
+            break;
+        }
+    }
+
     m_table->move(static_cast<int>(xPos), static_cast<int>(yPos));
     m_table->resize(static_cast<int>(xSize), static_cast<int>(ySize - (20 * 2)));
     m_table->verticalHeader()->hide();
@@ -59,6 +69,44 @@
     this->printTotal();
     this->printFunds();
     m_table->show();
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Operations
+//
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////
+void ::pos::ui::ProductContainer::load(
+    const ::std::string& id
+)
+{
+    if (::std::ifstream ifs("database/cart/Cart"s + id + ".csv"); !ifs.good()) {
+        throw ::std::runtime_error{ "Cart ID does not exist" };
+    }
+
+    this->clear();
+    m_products.clear();
+
+    m_id = id;
+    auto db{ ::std::make_shared<::db::Cart>("Cart"s + m_id) };
+    for (auto& product : db->retrieveAll()) {
+        this->add(product);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////
+void ::pos::ui::ProductContainer::save()
+{
+    ::std::remove(::std::string{ "database/cart/Cart"s + m_id + ".csv" }.c_str());
+    auto db{ ::db::Cart::get("Cart"s + m_id) };
+    for (auto& product : m_products) {
+        db->insert(product);
+    }
 }
 
 
@@ -107,20 +155,20 @@ auto ::pos::ui::ProductContainer::size()
 
 ///////////////////////////////////////////////////////////////////////////
 auto ::pos::ui::ProductContainer::emplaceFromId(
-    const ::std::string& id
+    const ::std::vector<::std::string>& ids
 ) -> ::std::size_t
 {
-    return this->add(::pos::Product::getFromDataBase(id));
+    return this->add(::pos::Product::getFromDataBase(ids[0], m_dbProducts));
 }
 
 ///////////////////////////////////////////////////////////////////////////
 auto ::pos::ui::ProductContainer::addFunds(
-    const ::std::string& valueStr
+    const ::std::vector<::std::string>& values
 ) -> ::std::size_t
 {
-    m_funds += ::std::stoi(valueStr) * 100;
-    if (auto it{ valueStr.find(".") }; it != ::std::string::npos) {
-        m_funds += ::std::stoi(valueStr.substr(it + 1));
+    m_funds += ::std::stoi(values[0]) * 100;
+    if (auto it{ values[0].find(".") }; it != ::std::string::npos) {
+        m_funds += ::std::stoi(values[0].substr(it + 1));
     }
     this->printFunds();
     return m_funds;
@@ -138,6 +186,7 @@ auto ::pos::ui::ProductContainer::pay()
         this->clear();
         m_funds -= total;
         this->printFunds();
+        ::std::remove(::std::string{ "database/cart/Cart"s + m_id + ".csv" }.c_str());
         return true;
     }
     return false;

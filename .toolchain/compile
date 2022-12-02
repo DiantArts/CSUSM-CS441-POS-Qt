@@ -16,7 +16,7 @@ compiler=clang++
 buildDir=.build
 cxxVersion=23
 buildType=Release
-binaryName=$(basename `git rev-parse --show-toplevel`)
+binaryName=CSUSM-CS441-POS-Qt
 binaryPath=${buildDir}/sources/bin/${binaryName}
 parallel=$(nproc)
 
